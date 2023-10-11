@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  process-engine:
+    container_name: process-engine
+    image: process-engine:latest
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    volumes:
+      - ./:/app
+    ports:
+      - 5050:5050
