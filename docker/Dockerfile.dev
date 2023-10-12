@@ -10,8 +10,6 @@ RUN go mod download
 
 COPY . .
 
-RUN go build -o /main
-
 EXPOSE 5050
 
-CMD ["/main"]
+CMD [ "air", "-d"]
