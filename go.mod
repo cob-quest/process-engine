@@ -1,6 +1,6 @@
 module gitlab.com/cs302-2023/g3-team8/project/process-engine
 
-go 1.21.3
+go 1.21
 
 require (
 	github.com/joho/godotenv v1.5.1
