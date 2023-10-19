@@ -98,7 +98,8 @@ func consume(rmq *config.RabbitMQ, queueName string) {
 			util.FailOnError(err, "Failed to publish a message")
 
 			// Acknowledge the message
-			d.Ack(false)
+			err = d.Ack(false)
+			util.FailOnError(err, "Failed to ack")
 		}
 	}()
 
