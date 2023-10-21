@@ -133,6 +133,19 @@ func SetupMQ() *RabbitMQ {
 	// EXCHANGE CREATION
 	// ------------------
 
+	// Router Topic
+	err = ch.ExchangeDeclare(
+		"topic.router", // name
+		"topic",        // type
+		true,           // durable
+		false,          // auto-deleted
+		false,          // internal
+		false,          // no-wait
+		nil,            // arguments
+	)
+	util.FailOnError(err, "Failed to declare an exchange")
+	log.Println("topic.router created!")
+
 	// Trigger Topic
 	err = ch.ExchangeDeclare(
 		"topic.trigger", // name
@@ -188,6 +201,39 @@ func SetupMQ() *RabbitMQ {
 	// -----------------
 	// BINDING CREATION
 	// -----------------
+
+	// Router Topic - Image Builder Topic
+	err = ch.ExchangeBind(
+		"topic.imageBuilder", // exchange destination name
+		"imageBuilder.#",     // routing key
+		"topic.router",  // exchange source name
+		false,
+		nil,
+	)
+	util.FailOnError(err, "Failed to bind a queue")
+	log.Println("Router Topic - Image Builder Topic")
+
+	// Router Topic - Notification Topic
+	err = ch.ExchangeBind(
+		"topic.notification", // exchange destination name
+		"notification.#",     // routing key
+		"topic.router",       // exchange source name
+		false,
+		nil,
+	)
+	util.FailOnError(err, "Failed to bind a queue")
+	log.Println("Router Topic - Notification Topic")
+
+	// Router Topic - Assignment Topic
+	err = ch.ExchangeBind(
+		"topic.assignment", // exchange destination name
+		"assignment.#",     // routing key
+		"topic.router",     // exchange source name
+		false,
+		nil,
+	)
+	util.FailOnError(err, "Failed to bind a queue")
+	log.Println("Router Topic - Assignment Topic")
 
 	// Trigger Topic - Trigger FromQueue
 	err = ch.QueueBind(

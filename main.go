@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	
+
 	// // Load env file
 	// log.Println("Loading .env file")
 	// config.InitEnvironment()
@@ -27,33 +27,6 @@ func main() {
 	go consume(rmq, "queue.imageBuilder.fromService")
 
 	select {}
-	// msgs, err := rmq.Ch.Consume(
-	// 	"queue.trigger.fromService", // queue
-	// 	"processEngine",             // consumer
-	// 	false,                       // auto-ack
-	// 	false,                       // exclusive
-	// 	false,                       // no-local
-	// 	false,                       // no-wait
-	// 	nil,                         // args
-	// )
-	// util.FailOnError(err, "Failed to consume messages from queue.trigger.fromService")
-
-	// var forever chan struct{}
-
-	// go func() {
-	// 	log.Println("Consuming")
-	// 	for msg := range msgs {
-	// 		log.Printf("Received msg: %s\n", msg.Body)
-
-	// 		err = msg.Ack(false)
-	// 		if err != nil {
-	// 			log.Printf("Failed to ack message: %s", err)
-	// 		}
-	// 	}
-	// }()
-
-	// log.Printf(" [*] Waiting for messages")
-	// <-forever
 }
 
 func consume(rmq *config.RabbitMQ, queueName string) {
@@ -81,21 +54,25 @@ func consume(rmq *config.RabbitMQ, queueName string) {
 			// Process the message
 			log.Printf("Received a message from queue %s: %s", queueName, d.Body)
 
+			// Get Routing Key
+			routingKey := util.DetermineNewRoutingKey(d.RoutingKey)
+
 			// After processing, publish to another queue
 			ctx := context.Background()
 
 			body := "Processed message from " + queueName + ": " + string(d.Body)
 			err := ch.PublishWithContext(
 				ctx,
-				"topic.notification",               // exchange
-				"notification.toService.testEvent", // routing key
-				true,                               // mandatory
-				false,                              // immediate
+				"topic.router", // exchange
+				routingKey,     // routing key
+				true,           // mandatory
+				false,          // immediate
 				amqp.Publishing{
 					ContentType: "text/plain",
 					Body:        []byte(body),
 				})
 			util.FailOnError(err, "Failed to publish a message")
+			log.Printf("Published a message with routing key %s: %s", routingKey, body)
 
 			// Acknowledge the message
 			err = d.Ack(false)
