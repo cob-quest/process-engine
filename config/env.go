@@ -9,9 +9,10 @@ import (
 
 func InitEnvironment() {
 	// loads environment variables
-	err := godotenv.Load()
+	err := godotenv.Load("secrets/.env")
 	if err != nil && os.Getenv("GIN_MODE") == "debug" {
 		log.Fatal("Error loading .env file")
 	}
 
 }
+

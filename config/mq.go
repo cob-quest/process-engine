@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -15,8 +16,20 @@ type RabbitMQ struct {
 
 func SetupMQ() *RabbitMQ {
 
+	// amqp
+	AMQP_PORT := os.Getenv("AMQP_PORT")
+	AMQP_HOSTNAME := os.Getenv("AMQP_HOSTNAME")
+	AMQP_USERNAME := os.Getenv("AMQP_USERNAME")
+	AMQP_PASSWORD := os.Getenv("AMQP_PASSWORD")
+
 	// Load url from .env
-	url := os.Getenv("AMQP_URL")
+	url := fmt.Sprintf(
+		"amqp://%s:%s@%s:%s/",
+		AMQP_USERNAME,
+		AMQP_PASSWORD,
+		AMQP_HOSTNAME,
+		AMQP_PORT,
+	)
 
 	// Connect to MQ
 	log.Println("Connecting to MQ")
@@ -71,11 +84,11 @@ func SetupMQ() *RabbitMQ {
 	// Image Builder From Queue
 	q4, err := ch.QueueDeclare(
 		"queue.imageBuilder.fromService", // name
-		true,                           // durable
-		false,                          // delete when unused
-		false,                          // exclusive
-		false,                          // no-wait
-		nil,                            // arguments
+		true,                             // durable
+		false,                            // delete when unused
+		false,                            // exclusive
+		false,                            // no-wait
+		nil,                              // arguments
 	)
 	util.FailOnError(err, "Failed to declare a queue")
 	log.Printf("%s created!\n", q4.Name)
@@ -95,11 +108,11 @@ func SetupMQ() *RabbitMQ {
 	// Assignment From Queue
 	q6, err := ch.QueueDeclare(
 		"queue.assignment.fromService", // name
-		true,                         // durable
-		false,                        // delete when unused
-		false,                        // exclusive
-		false,                        // no-wait
-		nil,                          // arguments
+		true,                           // durable
+		false,                          // delete when unused
+		false,                          // exclusive
+		false,                          // no-wait
+		nil,                            // arguments
 	)
 	util.FailOnError(err, "Failed to declare a queue")
 	log.Printf("%s created!\n", q6.Name)
@@ -224,7 +237,7 @@ func SetupMQ() *RabbitMQ {
 	err = ch.QueueBind(
 		"queue.imageBuilder.toService", // queue name
 		"imageBuilder.toService.*",     // routing key
-		"topic.imageBuilder",             // exchange
+		"topic.imageBuilder",           // exchange
 		false,
 		nil,
 	)
@@ -246,7 +259,7 @@ func SetupMQ() *RabbitMQ {
 	err = ch.QueueBind(
 		"queue.assignment.toService", // queue name
 		"assignment.toService.*",     // routing key
-		"topic.assignment",             // exchange
+		"topic.assignment",           // exchange
 		false,
 		nil,
 	)
