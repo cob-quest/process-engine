@@ -3,9 +3,11 @@ module gitlab.com/cs302-2023/g3-team8/project/process-engine
 go 1.21
 
 require (
+	github.com/davecgh/go-spew v1.1.1
 	github.com/joho/godotenv v1.5.1
 	github.com/rabbitmq/amqp091-go v1.9.0
 	go.mongodb.org/mongo-driver v1.12.1
+	google.golang.org/genproto v0.0.0-20230526161137-0005af68ea54
 )
 
 require (
@@ -19,5 +21,5 @@ require (
 	golang.org/x/crypto v0.0.0-20220622213112-05595931fe9d // indirect
 	golang.org/x/sync v0.4.0 // indirect
 	golang.org/x/text v0.8.0 // indirect
-	google.golang.org/genproto v0.0.0-20230526161137-0005af68ea54 // indirect
+	google.golang.org/protobuf v1.30.0 // indirect
 )
