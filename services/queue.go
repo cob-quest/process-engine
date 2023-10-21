@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/davecgh/go-spew/spew"
 	amqp "github.com/rabbitmq/amqp091-go"
 	"gitlab.com/cs302-2023/g3-team8/project/process-engine/config"
 	"gitlab.com/cs302-2023/g3-team8/project/process-engine/util"
@@ -35,18 +34,15 @@ func Consume(rmq *config.RabbitMQ, queueName string, callback Callback) {
 
 	go func() {
 		for d := range msgs {
+			ctx := context.Background()
+
 			// Process the message
 			log.Printf("Received a message from queue %s: %s", queueName, d.Body)
 
 			// Get Routing Key
 			routingKey := util.DetermineNewRoutingKey(d.RoutingKey)
 
-			// After processing, publish to another queue
-			ctx := context.Background()
-			temp := util.UnmarshalJson(d.Body)
-			log.Print("Json Body:")
-			spew.Dump(temp)
-
+			// Process message
 			callback(ch, ctx, d.Body, routingKey)
 
 			// Acknowledge the message
@@ -71,5 +67,5 @@ func Publish(ch *amqp.Channel, ctx context.Context, msg []byte, routingKey strin
 		})
 	util.FailOnError(err, "Failed to publish a message")
 	log.Printf("Published a message with routing key %s", routingKey)
-	
+
 }

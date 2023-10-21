@@ -7,13 +7,15 @@ import (
 )
 
 func GetCurrentDateTime() *datetime.DateTime {
-	now := time.Now()
+
+	location, _ := time.LoadLocation("Asia/Singapore")
+	now := time.Now().In(location)
 
 	dt := &datetime.DateTime{
-		Year:  int32(now.Year()),
-		Month: int32(now.Month()),
-		Day:   int32(now.Day()),
-		Hours: int32(now.Hour()),
+		Year:    int32(now.Year()),
+		Month:   int32(now.Month()),
+		Day:     int32(now.Day()),
+		Hours:   int32(now.Hour()),
 		Minutes: int32(now.Minute()),
 		Seconds: int32(now.Second()),
 		Nanos:   int32(now.Nanosecond()),
