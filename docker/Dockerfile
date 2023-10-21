@@ -2,13 +2,9 @@ FROM golang:alpine
 
 WORKDIR /app
 
-RUN go install github.com/cosmtrek/air@latest
-
-COPY go.* .
+COPY . ./
 
 RUN go mod download
-
-COPY . .
 
 RUN go build -o /main
 

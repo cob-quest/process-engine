@@ -18,10 +18,10 @@ func DBinstance() (client *mongo.Client) {
 
 	InitEnvironment()
 
-	user := os.Getenv("MONGO_USERNAME")
-	pass := os.Getenv("MONGO_PASSWORD")
-	host := os.Getenv("MONGO_HOST")
-	port := os.Getenv("MONGO_PORT")
+	user := os.Getenv("MONGODB_USERNAME")
+	pass := os.Getenv("MONGODB_PASSWORD")
+	host := os.Getenv("MONGODB_HOSTNAME")
+	port := "27017"
 
 	conn := fmt.Sprintf("mongodb://%s:%s@%s:%s", user, pass, host, port)
 
