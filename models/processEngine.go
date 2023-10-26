@@ -9,7 +9,7 @@ type ProcessEngine struct {
 	CorId        *string           `json:"corId" bson:"corId"`
 	Event        *string           `json:"event" bson:"event"`
 	EventSuccess bool              `json:"eventSuccess" bson:"eventSuccess"`
-	TestCreator  *string           `json:"testCreator" bson:"testCreator"`
-	ImageName    *string           `json:"imageName" bson:"imageName"`
-	Participants []string          `json:"participants" bson:"participants"`
+	CreatorName  *string           `json:"creatorName" bson:"creatorName,omitempty"`
+	ImageName    *string           `json:"imageName" bson:"imageName,omitempty"`
+	Participants *[]string         `json:"participants" bson:"participants,omitempty"`
 }
