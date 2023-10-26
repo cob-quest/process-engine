@@ -10,12 +10,19 @@ import (
 	"gitlab.com/cs302-2023/g3-team8/project/process-engine/util"
 )
 
-func ProcessTrigger(ch *amqp.Channel, ctx context.Context, msg []byte, routingKey string) {
+func ProcessTrigger(ch *amqp.Channel, ctx context.Context, msg []byte, routingKey string, eventName string) {
 
 	// Unmarshal message
-	temp := util.UnmarshalJson(msg)
+	m := util.UnmarshalJson(msg)
 	log.Print("Json Body:")
+	spew.Dump(m)
+
+	// Process map
+	temp := util.MapJsonToProcessEngine(m)
+	log.Print("After Mapping:")
 	spew.Dump(temp)
+
+	temp.Event = &eventName
 
 	// Store into db
 	collections.CreateProcessEngine(temp)

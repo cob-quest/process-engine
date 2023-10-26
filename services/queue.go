@@ -10,7 +10,7 @@ import (
 	"gitlab.com/cs302-2023/g3-team8/project/process-engine/util"
 )
 
-type Callback func(ch *amqp.Channel, ctx context.Context, msg []byte, routingKey string)
+type Callback func(ch *amqp.Channel, ctx context.Context, msg []byte, routingKey string, eventName string)
 
 func Consume(rmq *config.RabbitMQ, queueName string, callback Callback) {
 	// Create a new channel for this queue
@@ -40,10 +40,10 @@ func Consume(rmq *config.RabbitMQ, queueName string, callback Callback) {
 			log.Printf("Received a message from queue %s: %s", queueName, d.Body)
 
 			// Get Routing Key
-			routingKey := util.DetermineNewRoutingKey(d.RoutingKey)
+			routingKey, eventName := util.DetermineNewRoutingKeyAndEventName(d.RoutingKey)
 
 			// Process message
-			callback(ch, ctx, d.Body, routingKey)
+			callback(ch, ctx, d.Body, routingKey, eventName)
 
 			// Acknowledge the message
 			err = d.Ack(false)
