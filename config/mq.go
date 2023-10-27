@@ -105,9 +105,9 @@ func SetupMQ() *RabbitMQ {
 	util.FailOnError(err, "Failed to declare a queue")
 	log.Printf("%s created!\n", q5.Name)
 
-	// Assignment From Queue
+	// challenge From Queue
 	q6, err := ch.QueueDeclare(
-		"queue.assignment.fromService", // name
+		"queue.challenge.fromService", // name
 		true,                           // durable
 		false,                          // delete when unused
 		false,                          // exclusive
@@ -117,9 +117,9 @@ func SetupMQ() *RabbitMQ {
 	util.FailOnError(err, "Failed to declare a queue")
 	log.Printf("%s created!\n", q6.Name)
 
-	// Assignment To Queue
+	// challenge To Queue
 	q7, err := ch.QueueDeclare(
-		"queue.assignment.toService", // name
+		"queue.challenge.toService", // name
 		true,                         // durable
 		false,                        // delete when unused
 		false,                        // exclusive
@@ -172,9 +172,9 @@ func SetupMQ() *RabbitMQ {
 	util.FailOnError(err, "Failed to declare an exchange")
 	log.Println("topic.notification created!")
 
-	// Assignment Topic
+	// challenge Topic
 	err = ch.ExchangeDeclare(
-		"topic.assignment", // name
+		"topic.challenge", // name
 		"topic",            // type
 		true,               // durable
 		false,              // auto-deleted
@@ -183,7 +183,7 @@ func SetupMQ() *RabbitMQ {
 		nil,                // arguments
 	)
 	util.FailOnError(err, "Failed to declare an exchange")
-	log.Println("topic.assignment created!")
+	log.Println("topic.challenge created!")
 
 	// Image Builder Topic
 	err = ch.ExchangeDeclare(
@@ -224,16 +224,16 @@ func SetupMQ() *RabbitMQ {
 	util.FailOnError(err, "Failed to bind a queue")
 	log.Println("Router Topic - Notification Topic")
 
-	// Router Topic - Assignment Topic
+	// Router Topic - challenge Topic
 	err = ch.ExchangeBind(
-		"topic.assignment", // exchange destination name
-		"assignment.#",     // routing key
+		"topic.challenge", // exchange destination name
+		"challenge.#",     // routing key
 		"topic.router",     // exchange source name
 		false,
 		nil,
 	)
 	util.FailOnError(err, "Failed to bind a queue")
-	log.Println("Router Topic - Assignment Topic")
+	log.Println("Router Topic - challenge Topic")
 
 	// Trigger Topic - Trigger FromQueue
 	err = ch.QueueBind(
@@ -290,27 +290,27 @@ func SetupMQ() *RabbitMQ {
 	util.FailOnError(err, "Failed to bind a queue")
 	log.Println("Image Builder Topic - Image Builder ToQueue")
 
-	// Assignment Topic - Assignment FromQueue
+	// challenge Topic - challenge FromQueue
 	err = ch.QueueBind(
-		"queue.assignment.fromService", // queue name
-		"assignment.fromService.*",     // routing key
-		"topic.assignment",             // exchange
+		"queue.challenge.fromService", // queue name
+		"challenge.fromService.*",     // routing key
+		"topic.challenge",             // exchange
 		false,
 		nil,
 	)
 	util.FailOnError(err, "Failed to bind a queue")
-	log.Println("Assignment Topic - Assignment FromQueue")
+	log.Println("challenge Topic - challenge FromQueue")
 
-	// Assignment Topic - Assignment ToQueue
+	// challenge Topic - challenge ToQueue
 	err = ch.QueueBind(
-		"queue.assignment.toService", // queue name
-		"assignment.toService.*",     // routing key
-		"topic.assignment",           // exchange
+		"queue.challenge.toService", // queue name
+		"challenge.toService.*",     // routing key
+		"topic.challenge",           // exchange
 		false,
 		nil,
 	)
 	util.FailOnError(err, "Failed to bind a queue")
-	log.Println("Assignment Topic - Assignment ToQueue")
+	log.Println("challenge Topic - challenge ToQueue")
 
 	return &RabbitMQ{
 		Conn: conn,

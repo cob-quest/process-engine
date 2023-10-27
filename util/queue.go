@@ -20,12 +20,12 @@ func DetermineNewRoutingKeyAndEventName(routingKey string) (string, string) {
 	// Image Builder - Process Engine
 	case "imageBuilt":
 		return "", "Image build completed"
-	// Trigger - Assignment
+	// Trigger - Challenge
 	case "challengeCreate":
-		return "assignment.toService.challengeCreate", "Received trigger to start challenge creation"
-	// Assignment - Notification
+		return "challenge.toService.challengeCreate", "Received trigger to start challenge creation"
+	// challenge - Notification
 	case "challengeCreated":
-		return "notification.toService.emailSend", "Assignment creation completed"
+		return "notification.toService.emailSend", "Challenge creation completed"
 	// Notification - Process Engine
 	case "emailSent":
 		return "", "Notification sending completed"
