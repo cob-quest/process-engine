@@ -10,7 +10,7 @@ import (
 	"gitlab.com/cs302-2023/g3-team8/project/process-engine/util"
 )
 
-func ProcessAssignment(ch *amqp.Channel, ctx context.Context, msg []byte, routingKey string, eventName string) {
+func ProcessChallenge(ch *amqp.Channel, ctx context.Context, msg []byte, routingKey string, eventName string) {
 
 	// Unmarshal message
 	m := util.UnmarshalJson(msg)
