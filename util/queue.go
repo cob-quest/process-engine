@@ -34,3 +34,21 @@ func DetermineNewRoutingKeyAndEventName(routingKey string) (string, string) {
 		return "nothing", "nothing"
 	}
 }
+
+func DetermineBuildStatus(m map[string]interface{}) bool {
+	buildStatus, buildStatusExists := m["buildStatus"]; 
+	if buildStatusExists {
+		buildStatus = strings.ToLower(buildStatus.(string))
+		switch buildStatus {
+		case "success":
+			return true
+		case "failure":
+			return false
+		default:
+			log.Fatalf("Invalid build status: %s", buildStatus)
+			return false
+		}
+	}
+	log.Fatalf("Build status does not exist")
+	return false
+}

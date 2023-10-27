@@ -10,7 +10,7 @@ import (
 	"gitlab.com/cs302-2023/g3-team8/project/process-engine/util"
 )
 
-func ProcessImageBuilder(ch *amqp.Channel, ctx context.Context, msg []byte, routingKey string, eventName string) {
+func ProcessNotification(ch *amqp.Channel, ctx context.Context, msg []byte, routingKey string, eventName string) {
 
 	// Unmarshal message
 	m := util.UnmarshalJson(msg)
@@ -22,7 +22,11 @@ func ProcessImageBuilder(ch *amqp.Channel, ctx context.Context, msg []byte, rout
 	log.Print("After Mapping:")
 	spew.Dump(temp)
 
-	temp.EventSuccess = util.DetermineBuildStatus(m)
+	if m["totalSuccess"] == m["totalEmails"] {
+		temp.EventSuccess = true
+	} else {
+		temp.EventSuccess = false
+	}
 	temp.Event = &eventName
 
 	// Store into db

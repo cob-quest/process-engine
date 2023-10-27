@@ -12,4 +12,6 @@ type ProcessEngine struct {
 	CreatorName  *string           `json:"creatorName" bson:"creatorName,omitempty"`
 	ImageName    *string           `json:"imageName" bson:"imageName,omitempty"`
 	Participants *[]string         `json:"participants" bson:"participants,omitempty"`
+	Duration     *int64            `json:"duration" bson:"duration,omitempty"`
+	AssignmentId *string           `json:"assignmentId" bson:"assignmentId,omitempty"`
 }
