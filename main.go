@@ -11,8 +11,8 @@ func main() {
 	defer rmq.Conn.Close()
 	defer rmq.Ch.Close()
 
-	// go services.Consume(rmq, "queue.assignment.fromService")
-	// go services.Consume(rmq, "queue.notification.fromService")
+	go services.Consume(rmq, "queue.assignment.fromService", services.ProcessAssignment)
+	go services.Consume(rmq, "queue.notification.fromService", services.ProcessNotification)
 	go services.Consume(rmq, "queue.trigger.fromService", services.ProcessTrigger)
 	go services.Consume(rmq, "queue.imageBuilder.fromService", services.ProcessImageBuilder)
 

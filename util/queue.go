@@ -14,12 +14,21 @@ func getSuffix(routingKey string) string {
 func DetermineNewRoutingKeyAndEventName(routingKey string) (string, string) {
 	suffix := getSuffix(routingKey)
 	switch suffix {
+	// Trigger - Image Builder
 	case "imageBuild":
 		return "imageBuilder.toService.imageBuild", "Received trigger to start image build"
-	case "challengeCreate":
-		return "notification.toService.challengeCreate", "Received trigger to start challenge creation"
+	// Image Builder - Process Engine
 	case "imageBuilt":
 		return "", "Image build completed"
+	// Trigger - Assignment
+	case "challengeCreate":
+		return "assignment.toService.challengeCreate", "Received trigger to start challenge creation"
+	// Assignment - Notification
+	case "challengeCreated":
+		return "notification.toService.emailSend", "Assignment creation completed"
+	// Notification - Process Engine
+	case "emailSent":
+		return "", "Notification sending completed"
 	default:
 		log.Fatalf("Unknown suffix: %s", suffix)
 		return "nothing", "nothing"

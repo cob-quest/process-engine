@@ -23,6 +23,7 @@ func ProcessTrigger(ch *amqp.Channel, ctx context.Context, msg []byte, routingKe
 	spew.Dump(temp)
 
 	temp.Event = &eventName
+	temp.EventSuccess = true
 
 	// Store into db
 	collections.CreateProcessEngine(temp)
