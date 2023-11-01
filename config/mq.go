@@ -45,9 +45,9 @@ func SetupMQ() *RabbitMQ {
 	// QUEUE CREATION
 	// ---------------
 
-	// Trigger From Queue
+	// Platform From Queue
 	q, err := ch.QueueDeclare(
-		"queue.trigger.fromService", // name
+		"queue.platform.fromService", // name
 		true,                        // durable
 		false,                       // delete when unused
 		false,                       // exclusive
@@ -146,9 +146,9 @@ func SetupMQ() *RabbitMQ {
 	util.FailOnError(err, "Failed to declare an exchange")
 	log.Println("topic.router created!")
 
-	// Trigger Topic
+	// Platform Topic
 	err = ch.ExchangeDeclare(
-		"topic.trigger", // name
+		"topic.platform", // name
 		"topic",         // type
 		true,            // durable
 		false,           // auto-deleted
@@ -157,7 +157,7 @@ func SetupMQ() *RabbitMQ {
 		nil,             // arguments
 	)
 	util.FailOnError(err, "Failed to declare an exchange")
-	log.Println("topic.trigger created!")
+	log.Println("topic.platform created!")
 
 	// Notification Topic
 	err = ch.ExchangeDeclare(
@@ -235,16 +235,16 @@ func SetupMQ() *RabbitMQ {
 	util.FailOnError(err, "Failed to bind a queue")
 	log.Println("Router Topic - challenge Topic")
 
-	// Trigger Topic - Trigger FromQueue
+	// Platform Topic - Platform FromQueue
 	err = ch.QueueBind(
-		"queue.trigger.fromService", // queue name
-		"trigger.fromService.*",     // routing key
-		"topic.trigger",             // exchange
+		"queue.platform.fromService", // queue name
+		"platform.fromService.*",     // routing key
+		"topic.platform",             // exchange
 		false,
 		nil,
 	)
 	util.FailOnError(err, "Failed to bind a queue")
-	log.Println("Trigger Topic - Trigger FromQueue")
+	log.Println("Platform Topic - Platform FromQueue")
 
 	// Notification Topic - Notification FromQueue
 	err = ch.QueueBind(

@@ -40,7 +40,7 @@ func Consume(rmq *config.RabbitMQ, queueName string, callback Callback) {
 			log.Printf("Received a message from queue %s: %s", queueName, d.Body)
 
 			// Get Routing Key
-			routingKey, eventName := util.DetermineNewRoutingKeyAndEventName(d.RoutingKey)
+			routingKey, eventName := util.DetermineNewRoutingKeyAndEventName(d.RoutingKey, queueName)
 
 			// Process message
 			callback(ch, ctx, d.Body, routingKey, eventName)

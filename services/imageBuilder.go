@@ -22,7 +22,6 @@ func ProcessImageBuilder(ch *amqp.Channel, ctx context.Context, msg []byte, rout
 	log.Print("After Mapping:")
 	spew.Dump(temp)
 
-	temp.EventSuccess = util.DetermineBuildStatus(m)
 	temp.Event = &eventName
 
 	// Store into db

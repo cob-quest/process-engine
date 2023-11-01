@@ -13,7 +13,7 @@ func main() {
 
 	go services.Consume(rmq, "queue.challenge.fromService", services.ProcessChallenge)
 	go services.Consume(rmq, "queue.notification.fromService", services.ProcessNotification)
-	go services.Consume(rmq, "queue.trigger.fromService", services.ProcessTrigger)
+	go services.Consume(rmq, "queue.platform.fromService", services.ProcessPlatform)
 	go services.Consume(rmq, "queue.imageBuilder.fromService", services.ProcessImageBuilder)
 
 	select {}

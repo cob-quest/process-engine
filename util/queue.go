@@ -11,44 +11,44 @@ func getSuffix(routingKey string) string {
 	return parts[len(parts)-1]
 }
 
-func DetermineNewRoutingKeyAndEventName(routingKey string) (string, string) {
+func DetermineNewRoutingKeyAndEventName(routingKey string, queueName string) (newQueueName string, eventName string) {
 	suffix := getSuffix(routingKey)
 	switch suffix {
 	// Trigger - Image Builder
-	case "imageBuild":
-		return "imageBuilder.toService.imageBuild", "Received trigger to start image build"
+	case "imageCreate":
+		return "imageBuilder.toService.imageCreate", "imageCreate"
 	// Image Builder - Process Engine
-	case "imageBuilt":
-		return "", "Image build completed"
+	case "imageCreated":
+		return "", "imageCreate"
 	// Trigger - Challenge
 	case "challengeCreate":
-		return "challenge.toService.challengeCreate", "Received trigger to start challenge creation"
-	// challenge - Notification
+		return "challenge.toService.challengeCreate", "challengeCreate"
+	// Challenge - Notification
 	case "challengeCreated":
-		return "notification.toService.emailSend", "Challenge creation completed"
+		return "notification.toService.emailSend", "challengeCreate"
 	// Notification - Process Engine
 	case "emailSent":
-		return "", "Notification sending completed"
+		return "", "emailSend"
 	default:
 		log.Fatalf("Unknown suffix: %s", suffix)
-		return "nothing", "nothing"
 	}
+	return newQueueName, eventName
 }
 
-func DetermineBuildStatus(m map[string]interface{}) bool {
+func DetermineBuildStatus(m map[string]interface{}) string {
 	buildStatus, buildStatusExists := m["buildStatus"]; 
 	if buildStatusExists {
 		buildStatus = strings.ToLower(buildStatus.(string))
 		switch buildStatus {
 		case "success":
-			return true
+			return ""
 		case "failure":
-			return false
+			return ""
 		default:
 			log.Fatalf("Invalid build status: %s", buildStatus)
-			return false
+			return ""
 		}
 	}
 	log.Fatalf("Build status does not exist")
-	return false
+	return ""
 }

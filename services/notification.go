@@ -22,11 +22,6 @@ func ProcessNotification(ch *amqp.Channel, ctx context.Context, msg []byte, rout
 	log.Print("After Mapping:")
 	spew.Dump(temp)
 
-	if m["totalSuccess"] == m["totalEmails"] {
-		temp.EventSuccess = true
-	} else {
-		temp.EventSuccess = false
-	}
 	temp.Event = &eventName
 
 	// Store into db
