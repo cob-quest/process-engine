@@ -2,6 +2,26 @@ stages:          # List of stages for jobs, and their order of execution
   - Test
   - Build and Release
   - Update Chart
+##############################################################################
+##                              Variables                                   ##
+##############################################################################
+variables:
+  # AWS_WEB_IDENTITY_TOKEN_FILE: /tmp/web-identity-token
+  CD_CHART_REPO: process-engine-charts
+  CD_GIT_REPOSITORY: git@gitlab.com:cs302-2023/g3-team8/project/k8s/process-engine-charts.git
+  CD_MANIFEST_FILE: values.yaml
+  APP_NAME: gitops-argocd-deploy
+  CHART_FOLDER: helm
+
+##############################################################################
+##                Setup and Enable SSH                          ##
+##############################################################################
+.enable_ssh: &enable_ssh |-
+  apk add --no-cache git
+  mkdir -p /root/.ssh
+  echo "$SSH_PRIVATE_KEY" > /root/.ssh/id_rsa
+  ssh-keyscan -H gitlab.com > /root/.ssh/known_hosts
+  chmod 600 /root/.ssh/id_rsa
 
 lint:
   stage: Test
