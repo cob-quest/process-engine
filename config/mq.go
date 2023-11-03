@@ -48,11 +48,11 @@ func SetupMQ() *RabbitMQ {
 	// Platform From Queue
 	q, err := ch.QueueDeclare(
 		"queue.platform.fromService", // name
-		true,                        // durable
-		false,                       // delete when unused
-		false,                       // exclusive
-		false,                       // no-wait
-		nil,                         // arguments
+		true,                         // durable
+		false,                        // delete when unused
+		false,                        // exclusive
+		false,                        // no-wait
+		nil,                          // arguments
 	)
 	util.FailOnError(err, "Failed to declare a queue")
 	log.Printf("%s created!\n", q.Name)
@@ -108,11 +108,11 @@ func SetupMQ() *RabbitMQ {
 	// challenge From Queue
 	q6, err := ch.QueueDeclare(
 		"queue.challenge.fromService", // name
-		true,                           // durable
-		false,                          // delete when unused
-		false,                          // exclusive
-		false,                          // no-wait
-		nil,                            // arguments
+		true,                          // durable
+		false,                         // delete when unused
+		false,                         // exclusive
+		false,                         // no-wait
+		nil,                           // arguments
 	)
 	util.FailOnError(err, "Failed to declare a queue")
 	log.Printf("%s created!\n", q6.Name)
@@ -120,11 +120,11 @@ func SetupMQ() *RabbitMQ {
 	// challenge To Queue
 	q7, err := ch.QueueDeclare(
 		"queue.challenge.toService", // name
-		true,                         // durable
-		false,                        // delete when unused
-		false,                        // exclusive
-		false,                        // no-wait
-		nil,                          // arguments
+		true,                        // durable
+		false,                       // delete when unused
+		false,                       // exclusive
+		false,                       // no-wait
+		nil,                         // arguments
 	)
 	util.FailOnError(err, "Failed to declare a queue")
 	log.Printf("%s created!\n", q7.Name)
@@ -149,12 +149,12 @@ func SetupMQ() *RabbitMQ {
 	// Platform Topic
 	err = ch.ExchangeDeclare(
 		"topic.platform", // name
-		"topic",         // type
-		true,            // durable
-		false,           // auto-deleted
-		false,           // internal
-		false,           // no-wait
-		nil,             // arguments
+		"topic",          // type
+		true,             // durable
+		false,            // auto-deleted
+		false,            // internal
+		false,            // no-wait
+		nil,              // arguments
 	)
 	util.FailOnError(err, "Failed to declare an exchange")
 	log.Println("topic.platform created!")
@@ -175,12 +175,12 @@ func SetupMQ() *RabbitMQ {
 	// challenge Topic
 	err = ch.ExchangeDeclare(
 		"topic.challenge", // name
-		"topic",            // type
-		true,               // durable
-		false,              // auto-deleted
-		false,              // internal
-		false,              // no-wait
-		nil,                // arguments
+		"topic",           // type
+		true,              // durable
+		false,             // auto-deleted
+		false,             // internal
+		false,             // no-wait
+		nil,               // arguments
 	)
 	util.FailOnError(err, "Failed to declare an exchange")
 	log.Println("topic.challenge created!")
@@ -206,7 +206,7 @@ func SetupMQ() *RabbitMQ {
 	err = ch.ExchangeBind(
 		"topic.imageBuilder", // exchange destination name
 		"imageBuilder.#",     // routing key
-		"topic.router",  // exchange source name
+		"topic.router",       // exchange source name
 		false,
 		nil,
 	)
@@ -228,12 +228,23 @@ func SetupMQ() *RabbitMQ {
 	err = ch.ExchangeBind(
 		"topic.challenge", // exchange destination name
 		"challenge.#",     // routing key
-		"topic.router",     // exchange source name
+		"topic.router",    // exchange source name
 		false,
 		nil,
 	)
 	util.FailOnError(err, "Failed to bind a queue")
 	log.Println("Router Topic - challenge Topic")
+
+	// Router Topic - Platform Topic
+	err = ch.ExchangeBind(
+		"topic.platform", // exchange destination name
+		"platform.#",     // routing key
+		"topic.router",   // exchange source name
+		false,
+		nil,
+	)
+	util.FailOnError(err, "Failed to bind a queue")
+	log.Println("Router Topic - Platform Topic")
 
 	// Platform Topic - Platform FromQueue
 	err = ch.QueueBind(
