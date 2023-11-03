@@ -5,14 +5,16 @@ import (
 )
 
 type ProcessEngine struct {
-	Timestamp     datetime.DateTime `json:"timestamp" bson:"timestamp"`
-	CorId         *string           `json:"corId" bson:"corId"`
-	Event         *string           `json:"event" bson:"event"`
-	EventStatus   *string           `json:"eventStatus" bson:"eventStatus"`
-	CreatorName   *string           `json:"creatorName" bson:"creatorName,omitempty"`
-	ChallengeName *string           `json:"challengeName" bson:"challengeName,omitempty"`
-	ImageName     *string           `json:"imageName" bson:"imageName,omitempty"`
-	ImageTag      *string           `json:"imageTag" bson:"imageTag,omitempty"`
-	Participant   *string           `json:"participant" bson:"participant,omitempty"`
-	Participants  *[]string         `json:"participants" bson:"participants,omitempty"`
+	Timestamp         datetime.DateTime `json:"timestamp" bson:"timestamp"`
+	CorId             *string           `json:"corId" bson:"corId"`
+	Event             *string           `json:"event" bson:"event"`
+	EventStatus       *string           `json:"eventStatus" bson:"eventStatus"`
+	CreatorName       *string           `json:"creatorName" bson:"creatorName,omitempty"`
+	ChallengeName     *string           `json:"challengeName" bson:"challengeName,omitempty"`
+	ImageName         *string           `json:"imageName" bson:"imageName,omitempty"`
+	ImageTag          *string           `json:"imageTag" bson:"imageTag,omitempty"`
+	Participant       *string           `json:"participant" bson:"participant,omitempty"`
+	Participants      *[]string         `json:"participants" bson:"participants,omitempty"`
+	Token             *string           `json:"token" bson:"token,omitempty"`
+	ImageRegistryLink *string           `json:"imageRegistryLink" bson:"imageRegistryLink,omitempty"`
 }
