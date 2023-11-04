@@ -35,9 +35,9 @@ func DetermineNewRoutingKeyAndEventName(routingKey string, queueName string) (ne
 	case "challengeStarted":
 		return "", "challengeStart"
 	default:
-		log.Fatalf("Unknown suffix: %s", suffix)
+		log.Printf("Unknown suffix: %s", suffix)
+		return "error", "error"
 	}
-	return newQueueName, eventName
 }
 
 func DetermineBuildStatus(m map[string]interface{}) string {

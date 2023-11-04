@@ -10,10 +10,10 @@ import (
 	"gitlab.com/cs302-2023/g3-team8/project/process-engine/util"
 )
 
-func ProcessNotification(ch *amqp.Channel, ctx context.Context, msg []byte, routingKey string, eventName string) {
+func ProcessNotification(ch *amqp.Channel, ctx context.Context, d amqp.Delivery, routingKey string, eventName string) {
 
 	// Unmarshal message
-	m := util.UnmarshalJson(msg)
+	m := util.UnmarshalJson(d.Body)
 	log.Print("Json Body:")
 	spew.Dump(m)
 
