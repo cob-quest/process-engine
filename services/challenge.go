@@ -20,10 +20,10 @@ func ProcessChallenge(ch *amqp.Channel, ctx context.Context, d amqp.Delivery, ro
 
 	// Process map
 	temp := util.MapJsonToProcessEngine(m)
-	log.Print("After Mapping:")
-	spew.Dump(temp)
 	
 	temp.Event = &eventName
+	log.Print("After Mapping:")
+	spew.Dump(temp)
 
 	// Store into db
 	collections.CreateProcessEngine(temp)
