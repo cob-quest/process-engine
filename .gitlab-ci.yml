@@ -49,7 +49,6 @@ unit-test:
     - docker build -f docker/Dockerfile.test -t process-engine:test .
     - docker run --name process-engine-test-container process-engine:test go test -v ./... > test-results.txt
     - ls
-    - docker cp process-engine-test-container:/app/test-results.txt .
   artifacts:
     when: always
     paths:
