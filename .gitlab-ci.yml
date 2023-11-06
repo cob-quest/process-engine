@@ -2,6 +2,7 @@ stages:          # List of stages for jobs, and their order of execution
   - Test
   - Build and Release
   - Update Chart
+
 ##############################################################################
 ##                              Variables                                   ##
 ##############################################################################
@@ -38,6 +39,20 @@ lint:
       codequality: gl-code-quality-report.json
     paths:
       - gl-code-quality-report.json
+
+unit-test:
+  stage: Test
+  image: docker:24.0.2
+  services:
+    - docker:24.0.2-dind
+  script:
+    - docker build -f docker/Dockerfile.test -t process-engine:test .
+    - docker run --name process-engine-test-container process-engine:test go test -v ./... > test-results.txt
+    - docker cp process-engine-test-container:/app/test-results.txt .
+  artifacts:
+    when: always
+    paths:
+      - test-results.txt
 
 release-image:
   stage: Build and Release
