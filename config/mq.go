@@ -12,6 +12,7 @@ import (
 type RabbitMQ struct {
 	Conn *amqp.Connection
 	Ch   *amqp.Channel
+	Url  string
 }
 
 func SetupMQ() *RabbitMQ {
@@ -326,5 +327,6 @@ func SetupMQ() *RabbitMQ {
 	return &RabbitMQ{
 		Conn: conn,
 		Ch:   ch,
+		Url:  url,
 	}
 }
