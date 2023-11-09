@@ -63,6 +63,7 @@ integration-test:
     - docker compose -f docker-compose-test.yml --build -d
     - docker compose run --rm process-engine go test -v ./services/queue_integration_test.go > integration-test-results.txt
     - docker compose -f docker-compose-test.yml down
+    - ls
   artifacts:
     when: always
     paths:
