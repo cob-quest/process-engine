@@ -47,8 +47,8 @@ unit-test:
     - docker:24.0.2-dind
   script:
     - docker build -f docker/Dockerfile.test -t process-engine:test .
-    - docker run --name process-engine-test-container process-engine:test go test -v ./... > unit-test-results.txt
-    - ls
+    - docker run --name process-engine-test-container process-engine:test go test -v ./... &> unit-test-results.txt
+    - echo $?
   artifacts:
     when: always
     paths:
