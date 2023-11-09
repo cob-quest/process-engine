@@ -117,17 +117,17 @@ func Consume(rmq *config.RabbitMQ, queueName string, callback Callback) {
 }
 
 func Publish(ch *amqp.Channel, ctx context.Context, msg []byte, routingKey string) {
-	err := ch.PublishWithContext(
-		ctx,
-		"topic.router", // exchange
-		routingKey,     // routing key
-		true,           // mandatory
-		false,          // immediate
-		amqp.Publishing{
-			ContentType: "text/plain",
-			Body:        msg,
-		})
-	util.FailOnError(err, "Failed to publish a message")
-	log.Printf("Published a message with routing key %s", routingKey)
+	// err := ch.PublishWithContext(
+	// 	ctx,
+	// 	"topic.router", // exchange
+	// 	routingKey,     // routing key
+	// 	true,           // mandatory
+	// 	false,          // immediate
+	// 	amqp.Publishing{
+	// 		ContentType: "text/plain",
+	// 		Body:        msg,
+	// 	})
+	// util.FailOnError(err, "Failed to publish a message")
+	// log.Printf("Published a message with routing key %s", routingKey)
 
 }
