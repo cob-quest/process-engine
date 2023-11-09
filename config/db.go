@@ -30,8 +30,6 @@ func GetClient() *mongo.Client {
 
 func createDBInstance() (client *mongo.Client) {
 
-	InitEnvironment()
-
 	user := os.Getenv("MONGODB_USERNAME")
 	pass := os.Getenv("MONGODB_PASSWORD")
 	host := os.Getenv("MONGODB_HOSTNAME")

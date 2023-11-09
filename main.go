@@ -7,6 +7,7 @@ import (
 
 func main() {
 
+	config.InitEnvironment()
 	rmq := config.SetupMQ()
 	defer rmq.Conn.Close()
 	defer rmq.Ch.Close()
