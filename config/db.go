@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"sync"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -12,9 +13,22 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-var Client *mongo.Client = DBinstance()
+var (
+	clientInstance *mongo.Client
+	once sync.Once
+)
 
-func DBinstance() (client *mongo.Client) {
+// GetClient returns the singleton instance of the MongoDB client.
+func GetClient() *mongo.Client {
+	once.Do(func() {
+		if clientInstance == nil {
+			clientInstance = createDBInstance()
+		}
+	})
+	return clientInstance
+}
+
+func createDBInstance() (client *mongo.Client) {
 
 	InitEnvironment()
 

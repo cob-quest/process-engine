@@ -10,11 +10,15 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-var processEngineCollection *mongo.Collection = config.OpenCollection(config.Client, "process_engine")
+var processEngineCollection *mongo.Collection
 
 func CreateProcessEngine(processEngine *models.ProcessEngine) (result *mongo.InsertOneResult) {
 	ctx, cancel := context.WithTimeout(context.Background(), 100*time.Second)
 	defer cancel()
+
+	if processEngineCollection == nil {
+		processEngineCollection = config.OpenCollection(config.GetClient(), "process_engine")
+	}
 
 	processEngine.Timestamp = *util.GetCurrentDateTime()
 	result, err := processEngineCollection.InsertOne(ctx, processEngine)
