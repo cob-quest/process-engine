@@ -47,7 +47,7 @@ unit-test:
     - docker:24.0.2-dind
   script:
     - docker build -f docker/Dockerfile.test -t process-engine:test .
-    - docker run --name process-engine-test-container process-engine:test go test -v ./... &> unit-test-results.txt
+    - docker run --name process-engine-test-container process-engine:test go test -v -tags=unit ./... > unit-test-results.txt
     - echo $?
   artifacts:
     when: always
@@ -61,7 +61,7 @@ integration-test:
     - docker:24.0.2-dind
   script:
     - docker compose -f docker-compose-test.yml up --build -d
-    - docker compose run --rm process-engine go test -v ./services/queue_integration_test.go > integration-test-results.txt
+    - docker compose run --rm process-engine go test -v -tags=integration ./... > integration-test-results.txt
     - docker compose -f docker-compose-test.yml down
     - ls
   artifacts:
