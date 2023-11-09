@@ -22,7 +22,7 @@ func MapJsonToProcessEngine(m map[string]interface{}) *models.ProcessEngine {
 	err := mapstructure.Decode(m, data)
 	FailOnError(err, "Failed to convert to ProcessEngine")
 
-	return nil
+	return data
 }
 
 func ConvertToBson(data map[string]interface{}) []byte {
