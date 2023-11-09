@@ -6,8 +6,14 @@ require (
 	github.com/davecgh/go-spew v1.1.1
 	github.com/joho/godotenv v1.5.1
 	github.com/rabbitmq/amqp091-go v1.9.0
+	github.com/stretchr/testify v1.8.0
 	go.mongodb.org/mongo-driver v1.12.1
 	google.golang.org/genproto v0.0.0-20230526161137-0005af68ea54
+)
+
+require (
+	github.com/pmezard/go-difflib v1.0.0 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
 require (
@@ -15,6 +21,7 @@ require (
 	github.com/klauspost/compress v1.13.6 // indirect
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/montanaflynn/stats v0.0.0-20171201202039-1bf9dbcd8cbe // indirect
+	github.com/streadway/amqp v1.1.0
 	github.com/xdg-go/pbkdf2 v1.0.0 // indirect
 	github.com/xdg-go/scram v1.1.2 // indirect
 	github.com/xdg-go/stringprep v1.0.4 // indirect
