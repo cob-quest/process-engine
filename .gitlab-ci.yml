@@ -47,12 +47,26 @@ unit-test:
     - docker:24.0.2-dind
   script:
     - docker build -f docker/Dockerfile.test -t process-engine:test .
-    - docker run --name process-engine-test-container process-engine:test go test -v ./... > test-results.txt
+    - docker run --name process-engine-test-container process-engine:test go test -v ./... > unit-test-results.txt
     - ls
   artifacts:
     when: always
     paths:
-      - test-results.txt
+      - unit-test-results.txt
+
+integration-test:
+  stage: Test
+  image: docker:24.0.2
+  services:
+    - docker:24.0.2-dind
+  script:
+    - docker compose -f docker-compose-test.yml --build -d
+    - docker compose run --rm process-engine go test -v ./services/queue_integration_test.go > integration-test-results.txt
+    - docker compose -f docker-compose-test.yml down
+  artifacts:
+    when: always
+    paths:
+      - integration-test-results.txt
 
 release-image:
   stage: Build and Release
