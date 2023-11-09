@@ -33,7 +33,7 @@ func SetupMQ() *RabbitMQ {
 	)
 
 	// Connect to MQ
-	log.Println("Connecting to MQ")
+	log.Println("Connecting to MQ with: " + url)
 	conn, err := amqp.Dial(url)
 	util.FailOnError(err, "Failed to connect to RabbitMQ")
 	log.Println("Connected to MQ!")
